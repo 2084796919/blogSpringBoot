@@ -1,0 +1,81 @@
+# 数据源配置
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        druid:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+#            url: jdbc:mysql://localhost:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+            url: jdbc:mysql://101.200.154.204:3310/my_blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+            username: root
+            password: root
+            initial-size: 10
+            max-active: 100
+            min-idle: 10
+            max-wait: 60000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            time-between-eviction-runs-millis: 60000
+            min-evictable-idle-time-millis: 300000
+            #Oracle需要打开注释
+            #validation-query: SELECT 1 FROM DUAL
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            stat-view-servlet:
+                enabled: true
+                url-pattern: /druid/*
+                #login-username: admin
+                #login-password: admin
+            filter:
+                stat:
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: false
+                wall:
+                    config:
+                        multi-statement-allow: true
+    # Redis数据库索引（默认为0）
+    redis:
+        cluster:
+            nodes:
+                - 101.200.154.204:7001
+                - 101.200.154.204:7002
+                - 101.200.154.204:7003
+                - 101.200.154.204:7004
+                - 101.200.154.204:7005
+                - 101.200.154.204:7006
+            connectionTimeout: 6000
+            soTimeout: 6000
+            maxAttempts: 5
+            password: 123456 #写正确的密码
+            database: 0
+#    mvc:
+#        static-path-pattern: /static/**
+#    resources:
+#        static-locations: classpath:/META-INF/resources/,classpath:/resources/,/classpath:/static/,classpath:/public/
+#            nodes: 192.168.137.132:7001,192.168.137.132:7002,192.168.137.132:7003,192.168.137.132:7004,192.168.137.132:7005,192.168.137.132:7006
+myapplication:
+    # 对象存储配置
+    storage:
+        # 当前工作的对象存储模式，分别是local,qiniu
+        active: local
+        # 本地对象存储配置信息
+        local:
+            storagePath:  src/main/resources/static/storage/
+#            address: http://localhost:8080/luguz/storage/
+            address: http://101.200.154.204:8080/luguz/storage/
+
+        # 七牛云对象存储配置信息
+        qiniu:
+            endpoint: http://s3-cn-north-1.qiniucs.com
+            accessKey: xxx
+            secretKey: xxx
+            bucketName: pengcloud01
+            baseUrl:  http://sjpeng.top/
+            templateid: 1232312365865766912
+
+#控制台打印SQL
+logging:
+  file: ./logs/core.log
+  level:
+    com.peng.mapper: DEBUG

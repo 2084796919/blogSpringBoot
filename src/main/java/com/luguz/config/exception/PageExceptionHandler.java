@@ -1,0 +1,66 @@
+package com.luguz.config.exception;
+
+
+import com.luguz.entity.Result.JsonResult;
+import com.luguz.entity.Result.ResultCode;
+import com.luguz.entity.Result.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.*;
+
+
+/***
+ * 全局异常处理
+ */
+@ControllerAdvice
+@Slf4j
+public class PageExceptionHandler {
+
+    /***
+     * 验证码认证异常
+     */
+    @ResponseBody
+    @ExceptionHandler(CaptchaExpireException.class)
+    public Object handleException(CaptchaExpireException e) {
+        return ResultUtil.faile(ResultCode.CODE_AUTH_ERROR);
+    }
+
+    /***
+     * Token认证异常
+     */
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException.class)
+    public Object handleException(AuthenticationException e) {
+        return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
+    }
+
+    /***
+     * 权限异常
+     */
+    @ResponseBody
+    @ExceptionHandler(UnauthorizedException.class)
+    public Object handleException(UnauthorizedException e) {
+        return ResultUtil.faile(ResultCode.PERMISSION_NO_ACCESS);
+    }
+
+    /***
+     * 请求方式（get/post）异常
+     */
+    @ResponseBody
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Object handleException(HttpRequestMethodNotSupportedException e) {
+        return ResultUtil.faile(ResultCode.INTERFACE_METHOD_ERROR);
+    }
+
+    /***
+     * 其他异常
+     */
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public Object handleException(Exception e) {
+        e.printStackTrace();
+        return new JsonResult(50000, "服务器开小差了", null);
+    }
+}
