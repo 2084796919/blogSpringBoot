@@ -28,6 +28,7 @@
 - Vuex
 - WebSocket
 - vue-cli4
+前端git地址：https://github.com/2084796919/MyBlogVue
 ------------
 
 ## 上手指南
